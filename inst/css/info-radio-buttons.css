@@ -2,9 +2,32 @@
     display: inline-flex;
     align-items: center;
     position: relative;
-    margin-left: 2px;
+    margin-left: 0;
     vertical-align: middle;
     line-height: 1;
+    flex-shrink: 0;
+}
+
+/* Container for radio button with label - allows truncation */
+.shiny-input-radiogroup .pretty {
+    min-width: 0;
+    flex-shrink: 1;
+    margin-right: 0;
+}
+
+/* Label container should allow overflow handling */
+.shiny-input-radiogroup .pretty .state label {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Truncate long label text with ellipsis */
+.shiny-input-radiogroup .pretty .state label>span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .info-bubble {

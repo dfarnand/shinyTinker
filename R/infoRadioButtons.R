@@ -217,6 +217,10 @@ generateInfoPretty <- function(
             class = "info-bubble",
             `data-toggle` = "popover",
             `data-content` = desc,
+            # Provide title for all supported Bootstrap variants
+            title = as.character(name),
+            `data-original-title` = as.character(name),
+            `data-bs-title` = as.character(name),
             icon("info")
           )
         )
