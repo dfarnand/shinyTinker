@@ -1,6 +1,6 @@
 Package: shinyTinker
 Title: Custom Input Controls for Shiny Applications
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Daniel", "Farnand", email = "dev@danny.cafe", role = c("aut", "cre"))
 Description: Additional controls for Shiny Applications, modifying and iterating on shinyWidgets.
 License: use_mit_license()
