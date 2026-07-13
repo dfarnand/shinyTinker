@@ -19,7 +19,13 @@ A custom Shiny input control that can be added to a UI definition
 \description{
 This function creates a tri-state checkbox input that lets users cycle
 through three states: Include (1), Exclude (-1), and Neither/Neutral (0).
-The checkbox visually indicates the state with different icons and colors.
+The checkbox visually indicates the state with different colors and marks.
+}
+\details{
+The control renders as a real \verb{<input type="checkbox">}, so it can be
+focused with Tab and toggled with Space like a standard checkbox. Screen
+readers announce Include as "checked", Exclude as "not checked", and
+Neutral as "mixed" (the native indeterminate state).
 }
 \examples{
 \dontrun{

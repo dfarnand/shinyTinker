@@ -21,6 +21,11 @@ ui <- fluidPage(
                 "Enable feature",
                 value = 0
             ),
+            actionButton(
+                "tristate_server_cycle",
+                "Cycle tri-state from server",
+                class = "btn-sm"
+            ),
 
             hr(),
 
@@ -75,7 +80,10 @@ ui <- fluidPage(
             h3("Nav Download Button"),
             p(
                 "An icon link that triggers a download handler. Designed for",
-                code("rightUi"), "/", code("leftUi"), "in",
+                code("rightUi"),
+                "/",
+                code("leftUi"),
+                "in",
                 code("bs4Dash::dashboardHeader()"),
                 "but works in any nav list. It stays grayed out until the",
                 "download handler is ready."
@@ -118,6 +126,12 @@ server <- function(input, output, session) {
 
     output$tristate_label <- renderText({
         paste("State:", getTriStateLabel(input$tristate))
+    })
+
+    # Advance the tri-state from the server to demo updateTriStateCheckboxInput()
+    observeEvent(input$tristate_server_cycle, {
+        newState <- ((input$tristate + 2) %% 3) - 1
+        updateTriStateCheckboxInput(session, "tristate", value = newState)
     })
 
     # Info radio button outputs

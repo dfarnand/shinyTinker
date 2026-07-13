@@ -2,7 +2,12 @@
 #'
 #' This function creates a tri-state checkbox input that lets users cycle
 #' through three states: Include (1), Exclude (-1), and Neither/Neutral (0).
-#' The checkbox visually indicates the state with different icons and colors.
+#' The checkbox visually indicates the state with different colors and marks.
+#'
+#' The control renders as a real `<input type="checkbox">`, so it can be
+#' focused with Tab and toggled with Space like a standard checkbox. Screen
+#' readers announce Include as "checked", Exclude as "not checked", and
+#' Neutral as "mixed" (the native indeterminate state).
 #'
 #' @param inputId The `input` slot that will be used to access the value.
 #' @param label Display label for the control, or `NULL` for no label.
@@ -32,19 +37,21 @@ triStateCheckboxInput <- function(inputId, label, value = 0) {
     stop("value must be -1 (exclude), 0 (neutral), or 1 (include)")
   }
 
-  # Create the input element
+  # Mirror shiny::checkboxInput's outer layers (form-group rhythm and
+  # shiny-input-container width) but keep collision-free custom classes
+  # inside: Bootstrap's .checkbox class would absolutely-position the input
   htmltools::div(
-    htmltools::tagList(
-      # Make sure dependencies are included
-      triStateCheckboxDependencies(),
-
-      # Create the actual input element
-      htmltools::div(
-        class = "tri-state-container",
-        htmltools::span(
+    class = "form-group shiny-input-container",
+    triStateCheckboxDependencies(),
+    htmltools::div(
+      class = "tri-state-container",
+      htmltools::tags$label(
+        htmltools::tags$input(
           id = inputId,
+          type = "checkbox",
           class = "tri-state-checkbox",
-          `data-state` = value
+          `data-state` = value,
+          checked = if (value == 1) NA
         ),
         htmltools::span(class = "tri-state-label", label)
       )
@@ -122,14 +129,14 @@ triStateCheckboxDependencies <- function() {
   # Create CSS and JS dependencies
   css_dep <- htmltools::htmlDependency(
     name = "tri-state-checkbox-css",
-    version = "1.0.0",
+    version = "1.1.0",
     src = system.file("css", package = "shinyTinker"),
     stylesheet = "tri-state-checkbox.css"
   )
 
   js_dep <- htmltools::htmlDependency(
     name = "tri-state-checkbox-js",
-    version = "1.0.0",
+    version = "1.1.0",
     src = system.file("js", package = "shinyTinker"),
     script = "tri-state-checkbox-binding.js"
   )
