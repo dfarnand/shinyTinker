@@ -67,6 +67,24 @@ ui <- fluidPage(
                 selected = "short",
                 status = "success",
                 shape = "round"
+            ),
+
+            hr(),
+
+            h3("Nav Download Button"),
+            p(
+                "An icon link that triggers a download handler. Designed for",
+                code("rightUi"), "/", code("leftUi"), "in",
+                code("bs4Dash::dashboardHeader()"),
+                "but works in any nav list. It stays grayed out until the",
+                "download handler is ready."
+            ),
+            tags$ul(
+                class = "nav navbar-nav",
+                navDownloadButton(
+                    "demo_download",
+                    tooltip = "Download mtcars CSV"
+                )
             )
         ),
 
@@ -109,6 +127,14 @@ server <- function(input, output, session) {
     output$radio2_value <- renderPrint({
         input$radio2
     })
+
+    # Nav download button handler
+    output$demo_download <- downloadHandler(
+        filename = "mtcars.csv",
+        content = function(file) {
+            write.csv(mtcars, file)
+        }
+    )
 }
 
 shinyApp(ui, server)

@@ -2,6 +2,7 @@
 
 export(getTriStateLabel)
 export(infoRadioButtons)
+export(navDownloadButton)
 export(triStateCheckboxInput)
 export(updateTriStateCheckboxInput)
 importFrom(shiny,getDefaultReactiveDomain)

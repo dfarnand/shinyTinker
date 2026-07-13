@@ -1,0 +1,10 @@
+/* Gray out icon until Shiny connects and enables the handler */
+.nav-link.shiny-download-link.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.nav-link.shiny-download-link:not(.disabled) {
+  pointer-events: auto;
+  opacity: 1;
+}
