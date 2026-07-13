@@ -12,6 +12,7 @@ generateInfoPretty(
   choiceNames,
   choiceValues,
   descriptions = NULL,
+  label_width = NULL,
   status = "primary",
   shape = "square",
   outline = FALSE,
@@ -24,5 +25,7 @@ generateInfoPretty(
 )
 }
 \description{
-Internal function to generate pretty radio options with info bubbles
+When \code{label_width} is not \code{NULL}, labels get a fixed CSS width (and the
+option row stops flex-shrinking) so info bubbles align in a column.
 }
+\keyword{internal}

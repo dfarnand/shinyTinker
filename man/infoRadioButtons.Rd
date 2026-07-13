@@ -21,6 +21,7 @@ infoRadioButtons(
   bigger = FALSE,
   inline = FALSE,
   width = NULL,
+  label_width = NULL,
   choiceNames = NULL,
   choiceValues = NULL
 )
@@ -66,6 +67,11 @@ you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'suc
 
 \item{width}{The width of the input, e.g. \verb{400px}, or \verb{100\%}.}
 
+\item{label_width}{Optional fixed width for choice labels, e.g. \code{"190px"}
+(any valid CSS unit). When set, labels occupy a fixed width so the info
+bubbles align in a vertical column; long names are truncated with an
+ellipsis. \code{NULL} (the default) sizes labels to their text.}
+
 \item{choiceNames}{List of names to display to the user.}
 
 \item{choiceValues}{List of values corresponding to \code{choiceNames}}
@@ -84,6 +90,13 @@ ui <- fluidPage(
     "radio", "Choose an option:",
     choices = c("Option 1", "Option 2"),
     descriptions = c("Description for option 1", "Description for option 2")
+  ),
+  # Fixed label width so info bubbles align in a column
+  infoRadioButtons(
+    "radio2", "Aligned bubbles:",
+    choices = c("Short", "A much longer option name"),
+    descriptions = c("First description", "Second description"),
+    label_width = "190px"
   )
 )
 server <- function(input, output) {

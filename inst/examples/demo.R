@@ -66,7 +66,8 @@ ui <- fluidPage(
                 ),
                 selected = "short",
                 status = "success",
-                shape = "round"
+                shape = "round",
+                label_width = "190px"
             ),
 
             hr(),

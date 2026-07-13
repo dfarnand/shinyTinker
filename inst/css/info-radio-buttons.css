@@ -2,7 +2,7 @@
     display: inline-flex;
     align-items: center;
     position: relative;
-    margin-left: 0;
+    margin-left: 2px;
     vertical-align: middle;
     line-height: 1;
     flex-shrink: 0;

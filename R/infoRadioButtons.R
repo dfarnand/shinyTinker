@@ -26,6 +26,10 @@
 #' @param bigger Scale the radio a bit bigger (`TRUE` or `FALSE`).
 #' @param inline If `TRUE`, render the choices inline (i.e. horizontally).
 #' @param width The width of the input, e.g. `400px`, or `100%`.
+#' @param label_width Optional fixed width for choice labels, e.g. `"190px"`
+#'  (any valid CSS unit). When set, labels occupy a fixed width so the info
+#'  bubbles align in a vertical column; long names are truncated with an
+#'  ellipsis. `NULL` (the default) sizes labels to their text.
 #' @param choiceNames List of names to display to the user.
 #' @param choiceValues List of values corresponding to `choiceNames`
 #'
@@ -40,6 +44,13 @@
 #'     "radio", "Choose an option:",
 #'     choices = c("Option 1", "Option 2"),
 #'     descriptions = c("Description for option 1", "Description for option 2")
+#'   ),
+#'   # Fixed label width so info bubbles align in a column
+#'   infoRadioButtons(
+#'     "radio2", "Aligned bubbles:",
+#'     choices = c("Short", "A much longer option name"),
+#'     descriptions = c("First description", "Second description"),
+#'     label_width = "190px"
 #'   )
 #' )
 #' server <- function(input, output) {
@@ -67,9 +78,11 @@ infoRadioButtons <- function(
   bigger = FALSE,
   inline = FALSE,
   width = NULL,
+  label_width = NULL,
   choiceNames = NULL,
   choiceValues = NULL
 ) {
+  label_width <- htmltools::validateCssUnit(label_width)
   status <- match.arg(
     status,
     c("default", "primary", "success", "info", "danger", "warning")
@@ -127,6 +140,7 @@ infoRadioButtons <- function(
     choiceNames = args$choiceNames,
     choiceValues = args$choiceValues,
     descriptions = descriptions,
+    label_width = label_width,
     status = status,
     shape = shape,
     outline = outline,
@@ -171,6 +185,11 @@ infoRadioButtons <- function(
 
 
 #' Internal function to generate pretty radio options with info bubbles
+#'
+#' When `label_width` is not `NULL`, labels get a fixed CSS width (and the
+#' option row stops flex-shrinking) so info bubbles align in a column.
+#'
+#' @keywords internal
 generateInfoPretty <- function(
   inputId,
   selected,
@@ -179,6 +198,7 @@ generateInfoPretty <- function(
   choiceNames,
   choiceValues,
   descriptions = NULL,
+  label_width = NULL,
   status = "primary",
   shape = "square",
   outline = FALSE,
@@ -221,7 +241,7 @@ generateInfoPretty <- function(
             title = as.character(name),
             `data-original-title` = as.character(name),
             `data-bs-title` = as.character(name),
-            icon("info")
+            shiny::icon("info")
           )
         )
       } else {
@@ -263,6 +283,11 @@ generateInfoPretty <- function(
         )
       }
 
+      labelTag <- htmltools::tags$label(
+        style = htmltools::css(width = label_width),
+        htmltools::tags$span(name)
+      )
+
       if (inline) {
         htmltools::tags$div(
           class = paste(pretty_classes, collapse = " "),
@@ -270,7 +295,7 @@ generateInfoPretty <- function(
           htmltools::tags$div(
             class = paste(state_classes, collapse = " "),
             if (!is.null(icon)) icon,
-            htmltools::tags$label(htmltools::tags$span(name))
+            labelTag
           ),
           infoBubble
         )
@@ -280,11 +305,12 @@ generateInfoPretty <- function(
             style = "display: flex; align-items: center;",
             htmltools::tags$div(
               class = paste(pretty_classes, collapse = " "),
+              style = if (!is.null(label_width)) "flex-shrink: 0;",
               inputTag,
               htmltools::tags$div(
                 class = paste(state_classes, collapse = " "),
                 if (!is.null(icon)) icon,
-                htmltools::tags$label(htmltools::tags$span(name))
+                labelTag
               )
             ),
             infoBubble
